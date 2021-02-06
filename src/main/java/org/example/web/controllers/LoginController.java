@@ -32,17 +32,6 @@ public class LoginController {
         return "login_page";
     }
 
-//    @PostMapping("/auth")
-//    public String authenticate(LoginForm loginForm){
-//        if(RegistrationController){
-//            logger.info("login OK redirect to book shelf");
-//            return "redirect:/books/shelf";
-//        } else {
-//            logger.info("login FAIL redirect back to login");
-//            return "redirect:/login";
-//        }
-//
-//    }
 
     @GetMapping("/registration")
     public String registration() {

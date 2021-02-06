@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BookShelfController {
     private Logger logger = Logger.getLogger(BookShelfController.class);
     private BookService bookService;
+    private String nullString = "";
+    private String remove = "remove";
+    private String filter = "filter";
+    private String reset = "reset";
 
     @Autowired
     public BookShelfController(BookService bookService) {
@@ -28,8 +32,9 @@ public class BookShelfController {
         logger.info("got book shelf");
         model.addAttribute("book", new org.example.web.dto.Book());
         model.addAttribute("bookList", bookService.getAllBooks());
-        model.addAttribute("removeList", bookService.getRemoveList());
-        logger.info("removeList " + bookService.getRemoveList());
+        model.addAttribute("unicAuthors", bookService.getAuthors());
+        model.addAttribute("unicTitle", bookService.getTitle());
+        model.addAttribute("unicSize", bookService.getSize());
         return "book_shelf";
 
     }
@@ -47,34 +52,33 @@ public class BookShelfController {
         if (bookService.removeBookById(bookIdToRemove)) {
             return "redirect:/books/shelf";
         } else {
-            //  return "book_shelf";
             return "redirect:/books/shelf";
         }
     }
 
-    @PostMapping("/selectRemove")
-    public String selectRemoveBook(@RequestParam(value = "whatToRemove", required = false) String whatToRemove, @RequestParam(value = "valueToRemove") String valueToRemove) {
-        if (bookService.selectRemove(whatToRemove, valueToRemove)) {
+    @PostMapping("/filterAndRemove")
+    public String selectRemoveBook(@RequestParam(value = "RSelectAuthor", required = false) String RSelectAuthor,
+                                   @RequestParam(value = "RSelectTitle", required = false) String RSelectTitle,
+                                   @RequestParam(value = "RSelectSize", required = false) Integer RSelectSize,
+                                   @RequestParam(value = "button") String button) {
+        logger.info("RSelectAuthor: " + RSelectAuthor + " " + "RSelectTitle: " + RSelectTitle + " " + "RSelectSize: " + RSelectSize + " " + "button: " + button);
+        if (button.equals(reset)) {
+            logger.info("METHOD RESET FILTER: controller");
+            bookService.resetFilter();
+        } else if (RSelectAuthor == nullString & RSelectTitle == nullString & RSelectSize == null) {
+            logger.info("NO METHODS, ALL = NULL");
             return "redirect:/books/shelf";
-        } else {
-            return "redirect:/books/shelf";
+        } else if (button.equals(remove)) {
+            logger.info("METHOD REMOVE: controller");
+            bookService.removeSelectedBook(RSelectAuthor, RSelectTitle, RSelectSize);
+        } else if (button.equals(filter)) {
+            logger.info("METHOD FILTER: controller");
+            bookService.filterBooks(RSelectAuthor, RSelectTitle, RSelectSize);
         }
-
-    }
-
-    @PostMapping("/filter")
-    public String filter(@RequestParam(value = "whatToFilter", required = false) String whatToRemove, @RequestParam(value = "valueToFilter") String valueToRemove) {
-        if (bookService.filterBooks(whatToRemove, valueToRemove)) {
-            return "redirect:/books/shelf";
-        } else {
-            return "redirect:/books/shelf";
-        }
-    }
-
-    @PostMapping("/resetFilter")
-    public String resetFilter() {
-        bookService.resetFilter();
         return "redirect:/books/shelf";
     }
 
 }
+
+
+

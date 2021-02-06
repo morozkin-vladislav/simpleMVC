@@ -5,6 +5,7 @@ import org.example.web.dto.Book;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class BookRepository implements ProjectRepository<Book> {
@@ -21,22 +22,6 @@ public class BookRepository implements ProjectRepository<Book> {
     @Override
     public List<Book> retreivell() {
         return new ArrayList<>(repo);
-    }
-
-    @Override
-    public List<String> getRemoveList() {
-        final List<String> RemoveList = new ArrayList<>();
-        RemoveList.add(author);
-        RemoveList.add(book_title);
-        RemoveList.add(size);
-        logger.info("getRemoveList" + RemoveList);
-        return new ArrayList<>(RemoveList);
-
-    }
-
-    @Override
-    public void resetF() {
-        repo = new ArrayList<>(notFiltredRepo);
     }
 
 
@@ -64,39 +49,182 @@ public class BookRepository implements ProjectRepository<Book> {
         return false;
     }
 
+
     @Override
-    public boolean removeForAuthor(final String valueToRemove) {
-        notFiltredRepo.removeIf(n -> (n.getAuthor().equals(valueToRemove)));
-        return repo.removeIf(n -> (n.getAuthor().equals(valueToRemove)));
+    public List<String> getUnicAuthors() {
+        ArrayList<String> tempAuthors = new ArrayList<>();
+        for (Book book : notFiltredRepo) {
+            tempAuthors.add(book.getAuthor());
+        }
+        List<String> unicAuthors = new ArrayList<>();
+        return unicAuthors = tempAuthors.stream().distinct().collect(Collectors.toList());
     }
 
     @Override
-    public boolean removeToSize(String valueToRemove) {
-        Integer i = new Integer(valueToRemove);
-        notFiltredRepo.removeIf(n -> (n.getSize().equals(i)));
-        return repo.removeIf(n -> (n.getSize().equals(i)));
+    public List<String> getUnicTitle() {
+        ArrayList<String> tempTitle = new ArrayList<>();
+        for (Book book : notFiltredRepo) {
+            tempTitle.add(book.getTitle());
+        }
+        List<String> unicTitle = new ArrayList<>();
+        return unicTitle = tempTitle.stream().distinct().collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<Integer> getUnicSize() {
+        ArrayList<Integer> tempSize = new ArrayList<>();
+        for (Book book : notFiltredRepo) {
+            tempSize.add(book.getSize());
+        }
+        List<Integer> unicSize = new ArrayList<>();
+        return unicSize = tempSize.stream().distinct().collect(Collectors.toList());
     }
 
     @Override
-    public boolean removeToTitle(String valueToRemove) {
-        notFiltredRepo.removeIf(n -> (n.getTitle().equals(valueToRemove)));
-        return repo.removeIf(n -> (n.getTitle().equals(valueToRemove)));
+    public void removeMethod1(String rSelectAuthor) {
+        for (Book book : retreivell()) {
+            if (book.getAuthor().equals(rSelectAuthor)) {
+                notFiltredRepo.remove(book);
+                repo.remove(book);
+            }
+        }
     }
 
     @Override
-    public boolean filterForAuthor(String valueToFilter) {
-        return repo.removeIf(n -> (n.getAuthor().equals(valueToFilter)));
+    public void removeMethod2(String rSelectAuthor, String rSelectTitle) {
+        for (Book book : retreivell()) {
+            if (book.getAuthor().equals(rSelectAuthor) && book.getTitle().equals(rSelectTitle)) {
+                notFiltredRepo.remove(book);
+                repo.remove(book);
+            }
+        }
     }
 
     @Override
-    public boolean filterToSize(String valueToFilter) {
-        Integer i = new Integer(valueToFilter);
-        return repo.removeIf(n -> (n.getSize().equals(i)));
+    public void removeMethod3(String rSelectAuthor, String rSelectTitle, Integer rSelectSize) {
+        for (Book book : retreivell()) {
+            if (book.getAuthor().equals(rSelectAuthor) && book.getTitle().equals(rSelectTitle) && book.getSize().equals(rSelectSize)) {
+                notFiltredRepo.remove(book);
+                repo.remove(book);
+            }
+        }
     }
 
     @Override
-    public boolean filterToTitle(String valueToFilter) {
-        return repo.removeIf(n -> (n.getTitle().equals(valueToFilter)));
+    public void removeMethod4(String rSelectAuthor, Integer rSelectSize) {
+        for (Book book : retreivell()) {
+            if (book.getAuthor().equals(rSelectAuthor) && book.getSize().equals(rSelectSize)) {
+                notFiltredRepo.remove(book);
+                repo.remove(book);
+            }
+        }
+    }
+
+    @Override
+    public void removeMethod5(Integer rSelectSize) {
+        for (Book book : retreivell()) {
+            if (book.getSize().equals(rSelectSize)) {
+                notFiltredRepo.remove(book);
+                repo.remove(book);
+            }
+        }
+    }
+
+    @Override
+    public void removeMethod6(String rSelectTitle, Integer rSelectSize) {
+        for (Book book : retreivell()) {
+            if (book.getTitle().equals(rSelectTitle) && book.getSize().equals(rSelectSize)) {
+                notFiltredRepo.remove(book);
+                repo.remove(book);
+            }
+        }
+    }
+
+    @Override
+    public void removeMethod7(String rSelectTitle) {
+        for (Book book : retreivell()) {
+            if (book.getTitle().equals(rSelectTitle)) {
+                notFiltredRepo.remove(book);
+                repo.remove(book);
+            }
+        }
+    }
+
+    @Override
+    public void resetFilter() {
+        repo.clear();
+        repo.addAll(notFiltredRepo);
+    }
+
+    @Override
+    public void filterMethod1(String rSelectAuthor) {
+        repo.clear();
+        for (Book books : notFiltredRepo) {
+            if (books.getAuthor().equals(rSelectAuthor)) {
+                repo.add(books);
+            }
+        }
+    }
+
+    @Override
+    public void filterMethod2(String rSelectAuthor, String rSelectTitle) {
+        repo.clear();
+        for (Book books : notFiltredRepo) {
+            if (books.getAuthor().equals(rSelectAuthor) & books.getTitle().equals(rSelectTitle)) {
+                repo.add(books);
+            }
+        }
+    }
+
+    @Override
+    public void filterMethod3(String rSelectAuthor, String rSelectTitle, Integer rSelectSize) {
+        repo.clear();
+        for (Book books : notFiltredRepo) {
+            if (books.getAuthor().equals(rSelectAuthor) & books.getTitle().equals(rSelectTitle) & books.getSize().equals(rSelectSize)) {
+                repo.add(books);
+            }
+        }
+    }
+
+    @Override
+    public void filterMethod4(String rSelectAuthor, Integer rSelectSize) {
+        repo.clear();
+        for (Book books : notFiltredRepo) {
+            if (books.getAuthor().equals(rSelectAuthor) & books.getSize().equals(rSelectSize)) {
+                repo.add(books);
+            }
+        }
+    }
+
+    @Override
+    public void filterMethod5(Integer rSelectSize) {
+        repo.clear();
+        for (Book books : notFiltredRepo) {
+            if (books.getSize().equals(rSelectSize)) {
+                repo.add(books);
+            }
+        }
+    }
+
+    @Override
+    public void filterMethod6(String rSelectTitle, Integer rSelectSize) {
+        repo.clear();
+        for (Book books : notFiltredRepo) {
+            if (books.getTitle().equals(rSelectTitle) & books.getSize().equals(rSelectSize)) {
+                repo.add(books);
+            }
+        }
+    }
+
+    @Override
+    public void filterMethod7(String rSelectTitle) {
+        repo.clear();
+        for (Book books : notFiltredRepo) {
+            if (books.getTitle().equals(rSelectTitle)) {
+                repo.add(books);
+            }
+        }
     }
 
 

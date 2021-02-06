@@ -10,19 +10,46 @@ public interface ProjectRepository<T> {
 
     boolean removeItemById(Integer bookIdToRemove);
 
-    boolean removeForAuthor(String valueToRemove);
 
-    boolean removeToSize(String valueToRemove);
 
-    boolean removeToTitle(String valueToRemove);
 
-    List<String> getRemoveList();
 
-    void resetF();
+    List<String> getUnicAuthors();
 
-    boolean filterForAuthor(String valueToFilter);
+    List<String> getUnicTitle();
 
-    boolean filterToSize(String valueToFilter);
+    List<Integer> getUnicSize();
 
-    boolean filterToTitle(String valueToFilter);
+    void removeMethod1(String rSelectAuthor);
+
+    void removeMethod2(String rSelectAuthor, String rSelectTitle);
+
+    void removeMethod3(String rSelectAuthor, String rSelectTitle, Integer rSelectSize);
+
+    void removeMethod4(String rSelectAuthor, Integer rSelectSize);
+
+    void removeMethod5(Integer rSelectSize);
+
+    void removeMethod6(String rSelectTitle, Integer rSelectSize);
+
+    void removeMethod7(String rSelectTitle);
+
+    void resetFilter();
+
+    void filterMethod1(String rSelectAuthor);
+
+    void filterMethod2(String rSelectAuthor, String rSelectTitle);
+
+    void filterMethod3(String rSelectAuthor, String rSelectTitle, Integer rSelectSize);
+
+    void filterMethod4(String rSelectAuthor, Integer rSelectSize);
+
+    void filterMethod5(Integer rSelectSize);
+
+    void filterMethod6(String rSelectTitle, Integer rSelectSize);
+
+    void filterMethod7(String rSelectTitle);
+
+
 }
+

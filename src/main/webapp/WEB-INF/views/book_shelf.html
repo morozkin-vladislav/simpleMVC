@@ -64,13 +64,14 @@
     </form>
 
     <p>You can filter records or remove them by filter:</p>
-    <form method="post" th:action="@{/books/selectRemove}">
+    <form method="post" th:action="@{/books/filterAndRemove}">
         <table>
             <tr>
                 <td>
                     <div>
-                        <select name="whatToRemove">
-                            <option th:each="String : ${removeList}"
+                        <select name="RSelectAuthor">
+                            <option value="">Author</option>
+                            <option th:each="String : ${unicAuthors}"
                                     th:value="${String}"
                                     th:text="${String}">
                             </option>
@@ -78,42 +79,40 @@
                     </div>
                 </td>
                 <td>
-                    <input type="text" placeholder="value" th:name="valueToRemove">
+                    <div>
+                        <select name="RSelectTitle">
+                            <option value="">Title</option>
+                            <option th:each="String : ${unicTitle}"
+                                    th:value="${String}"
+                                    th:text="${String}">
+                            </option>
+                        </select>
+                    </div>
                 </td>
                 <td>
-                    <input type="submit" value="remove">
+                    <div>
+                        <select name="RSelectSize">
+                            <option value="">Size</option>
+                            <option th:each="Integer : ${unicSize}"
+                                    th:value="${Integer}"
+                                    th:text="${Integer}">
+                            </option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <input type="submit" value="remove" name="button">
+                </td>
+                <td>
+                    <input type="submit" value="filter" name="button">
+                </td>
+                <td>
+                    <input type="submit" value="reset" name="button">
                 </td>
             </tr>
         </table>
 
     </form>
-    <form method="post" th:action="@{/books/filter}">
-        <table>
-            <tr>
-                <td>
-                    <div>
-                        <select name="whatToFilter">
-                            <option th:each="String : ${removeList}"
-                                    th:value="${String}"
-                                    th:text="${String}">
-                            </option>
-                        </select>
-                    </div>
-                </td>
-                <td>
-                    <input type="text" placeholder="value" th:name="valueToFilter">
-                </td>
-                <td>
-                    <input type="submit" value="Filter">
-                </td>
-            </tr>
-        </table>
-    </form>
-    <center>
-        <form method="post" th:action="@{/books/resetFilter}">
-            <input type="submit" value="Reset filter">
-        </form>
-    </center>
 
     <table id="books">
         <tr>
