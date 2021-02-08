@@ -4,52 +4,47 @@ import java.util.List;
 import java.util.Map;
 
 public interface ProjectRepository<T> {
-    List<T> retreivell();
+    List<T> retreiveAll();
 
     void store(T book);
 
     boolean removeItemById(Integer bookIdToRemove);
 
 
+    List<String> getUniqueAuthors();
 
+    List<String> getUniqueTitle();
 
-
-    List<String> getUnicAuthors();
-
-    List<String> getUnicTitle();
-
-    List<Integer> getUnicSize();
-
-    void removeMethod1(String rSelectAuthor);
-
-    void removeMethod2(String rSelectAuthor, String rSelectTitle);
-
-    void removeMethod3(String rSelectAuthor, String rSelectTitle, Integer rSelectSize);
-
-    void removeMethod4(String rSelectAuthor, Integer rSelectSize);
-
-    void removeMethod5(Integer rSelectSize);
-
-    void removeMethod6(String rSelectTitle, Integer rSelectSize);
-
-    void removeMethod7(String rSelectTitle);
+    List<Integer> getUniqueSize();
 
     void resetFilter();
 
-    void filterMethod1(String rSelectAuthor);
+    void removeBookByAuthor(String rSelectAuthor);
 
-    void filterMethod2(String rSelectAuthor, String rSelectTitle);
+    void removeBookBySize(Integer rSelectSize);
 
-    void filterMethod3(String rSelectAuthor, String rSelectTitle, Integer rSelectSize);
+    void removeBookByTitle(String rSelectTitle);
 
-    void filterMethod4(String rSelectAuthor, Integer rSelectSize);
+    void removeBookByAuthorTitle(String rSelectAuthor, String rSelectTitle);
 
-    void filterMethod5(Integer rSelectSize);
+    void removeBookByAuthorSize(String rSelectAuthor, Integer rSelectSize);
 
-    void filterMethod6(String rSelectTitle, Integer rSelectSize);
+    void removeBookByTitleSize(String rSelectTitle, Integer rSelectSize);
 
-    void filterMethod7(String rSelectTitle);
+    void removeBookByAuthorTitleSize(String rSelectAuthor, String rSelectTitle, Integer rSelectSize);
 
+    void filterBookByAuthor(String rSelectAuthor);
 
+    void filterBookBySize(Integer rSelectSize);
+
+    void filterBookByTitle(String rSelectTitle);
+
+    void filterBookByAuthorTitle(String rSelectAuthor, String rSelectTitle);
+
+    void filterBookByAuthorSize(String rSelectAuthor, Integer rSelectSize);
+
+    void filterBookByTitleSize(String rSelectTitle, Integer rSelectSize);
+
+    void filterBookByAuthorTitleSize(String rSelectAuthor, String rSelectTitle, Integer rSelectSize);
 }
 

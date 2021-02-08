@@ -1,6 +1,4 @@
 package org.example.web.controllers;
-
-
 import org.apache.log4j.Logger;
 import org.example.app.services.BookService;
 import org.example.web.dto.Book;
@@ -18,9 +16,10 @@ public class BookShelfController {
     private Logger logger = Logger.getLogger(BookShelfController.class);
     private BookService bookService;
     private String nullString = "";
-    private String remove = "remove";
-    private String filter = "filter";
-    private String reset = "reset";
+    private static final String REMOVE_COMMAND = "remove";
+    private static final String FILTER_COMMAND = "filter";
+    private static final String RESET_COMMAND = "reset";
+    private static final String DEFAULT_VALUE = "defaultValue";
 
     @Autowired
     public BookShelfController(BookService bookService) {
@@ -32,9 +31,9 @@ public class BookShelfController {
         logger.info("got book shelf");
         model.addAttribute("book", new org.example.web.dto.Book());
         model.addAttribute("bookList", bookService.getAllBooks());
-        model.addAttribute("unicAuthors", bookService.getAuthors());
-        model.addAttribute("unicTitle", bookService.getTitle());
-        model.addAttribute("unicSize", bookService.getSize());
+        model.addAttribute("uniqueAuthors", bookService.getAuthors());
+        model.addAttribute("uniqueTitle", bookService.getTitle());
+        model.addAttribute("uniqueSize", bookService.getSize());
         return "book_shelf";
 
     }
@@ -57,21 +56,21 @@ public class BookShelfController {
     }
 
     @PostMapping("/filterAndRemove")
-    public String selectRemoveBook(@RequestParam(value = "RSelectAuthor", required = false) String RSelectAuthor,
-                                   @RequestParam(value = "RSelectTitle", required = false) String RSelectTitle,
+    public String selectRemoveBook(@RequestParam(value = "RSelectAuthor", required = false, defaultValue = DEFAULT_VALUE) String RSelectAuthor,
+                                   @RequestParam(value = "RSelectTitle", required = false, defaultValue = DEFAULT_VALUE) String RSelectTitle,
                                    @RequestParam(value = "RSelectSize", required = false) Integer RSelectSize,
                                    @RequestParam(value = "button") String button) {
         logger.info("RSelectAuthor: " + RSelectAuthor + " " + "RSelectTitle: " + RSelectTitle + " " + "RSelectSize: " + RSelectSize + " " + "button: " + button);
-        if (button.equals(reset)) {
+        if (button.equals(RESET_COMMAND)) {
             logger.info("METHOD RESET FILTER: controller");
             bookService.resetFilter();
-        } else if (RSelectAuthor == nullString & RSelectTitle == nullString & RSelectSize == null) {
+        } else if (RSelectAuthor.equals(DEFAULT_VALUE) & RSelectTitle.equals(DEFAULT_VALUE) & RSelectSize == null) {
             logger.info("NO METHODS, ALL = NULL");
             return "redirect:/books/shelf";
-        } else if (button.equals(remove)) {
+        } else if (button.equals(REMOVE_COMMAND)) {
             logger.info("METHOD REMOVE: controller");
             bookService.removeSelectedBook(RSelectAuthor, RSelectTitle, RSelectSize);
-        } else if (button.equals(filter)) {
+        } else if (button.equals(FILTER_COMMAND)) {
             logger.info("METHOD FILTER: controller");
             bookService.filterBooks(RSelectAuthor, RSelectTitle, RSelectSize);
         }

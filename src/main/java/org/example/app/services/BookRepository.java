@@ -14,13 +14,9 @@ public class BookRepository implements ProjectRepository<Book> {
     private List<Book> repo = new ArrayList<>();
     private final List<Book> notFiltredRepo = new ArrayList<>();
 
-    private final String author = "author";
-    private final String size = "size";
-    private final String book_title = "book_title";
-
 
     @Override
-    public List<Book> retreivell() {
+    public List<Book> retreiveAll() {
         return new ArrayList<>(repo);
     }
 
@@ -39,7 +35,7 @@ public class BookRepository implements ProjectRepository<Book> {
 
     @Override
     public boolean removeItemById(Integer bookIdToRemove) {
-        for (Book book : retreivell()) {
+        for (Book book : retreiveAll()) {
             if (book.getId().equals(bookIdToRemove)) {
                 logger.info("remove book completed: " + book);
                 notFiltredRepo.remove(book);
@@ -51,39 +47,38 @@ public class BookRepository implements ProjectRepository<Book> {
 
 
     @Override
-    public List<String> getUnicAuthors() {
+    public List<String> getUniqueAuthors() {
         ArrayList<String> tempAuthors = new ArrayList<>();
         for (Book book : notFiltredRepo) {
             tempAuthors.add(book.getAuthor());
         }
-        List<String> unicAuthors = new ArrayList<>();
-        return unicAuthors = tempAuthors.stream().distinct().collect(Collectors.toList());
+
+        return tempAuthors.stream().distinct().collect(Collectors.toList());
     }
 
     @Override
-    public List<String> getUnicTitle() {
+    public List<String> getUniqueTitle() {
         ArrayList<String> tempTitle = new ArrayList<>();
         for (Book book : notFiltredRepo) {
             tempTitle.add(book.getTitle());
         }
-        List<String> unicTitle = new ArrayList<>();
-        return unicTitle = tempTitle.stream().distinct().collect(Collectors.toList());
+        return tempTitle.stream().distinct().collect(Collectors.toList());
     }
 
 
     @Override
-    public List<Integer> getUnicSize() {
+    public List<Integer> getUniqueSize() {
         ArrayList<Integer> tempSize = new ArrayList<>();
         for (Book book : notFiltredRepo) {
             tempSize.add(book.getSize());
         }
-        List<Integer> unicSize = new ArrayList<>();
-        return unicSize = tempSize.stream().distinct().collect(Collectors.toList());
+
+        return tempSize.stream().distinct().collect(Collectors.toList());
     }
 
     @Override
-    public void removeMethod1(String rSelectAuthor) {
-        for (Book book : retreivell()) {
+    public void removeBookByAuthor(String rSelectAuthor) {
+        for (Book book : retreiveAll()) {
             if (book.getAuthor().equals(rSelectAuthor)) {
                 notFiltredRepo.remove(book);
                 repo.remove(book);
@@ -92,8 +87,8 @@ public class BookRepository implements ProjectRepository<Book> {
     }
 
     @Override
-    public void removeMethod2(String rSelectAuthor, String rSelectTitle) {
-        for (Book book : retreivell()) {
+    public void removeBookByAuthorTitle(String rSelectAuthor, String rSelectTitle) {
+        for (Book book : retreiveAll()) {
             if (book.getAuthor().equals(rSelectAuthor) && book.getTitle().equals(rSelectTitle)) {
                 notFiltredRepo.remove(book);
                 repo.remove(book);
@@ -102,8 +97,8 @@ public class BookRepository implements ProjectRepository<Book> {
     }
 
     @Override
-    public void removeMethod3(String rSelectAuthor, String rSelectTitle, Integer rSelectSize) {
-        for (Book book : retreivell()) {
+    public void removeBookByAuthorTitleSize(String rSelectAuthor, String rSelectTitle, Integer rSelectSize) {
+        for (Book book : retreiveAll()) {
             if (book.getAuthor().equals(rSelectAuthor) && book.getTitle().equals(rSelectTitle) && book.getSize().equals(rSelectSize)) {
                 notFiltredRepo.remove(book);
                 repo.remove(book);
@@ -112,8 +107,8 @@ public class BookRepository implements ProjectRepository<Book> {
     }
 
     @Override
-    public void removeMethod4(String rSelectAuthor, Integer rSelectSize) {
-        for (Book book : retreivell()) {
+    public void removeBookByAuthorSize(String rSelectAuthor, Integer rSelectSize) {
+        for (Book book : retreiveAll()) {
             if (book.getAuthor().equals(rSelectAuthor) && book.getSize().equals(rSelectSize)) {
                 notFiltredRepo.remove(book);
                 repo.remove(book);
@@ -122,8 +117,8 @@ public class BookRepository implements ProjectRepository<Book> {
     }
 
     @Override
-    public void removeMethod5(Integer rSelectSize) {
-        for (Book book : retreivell()) {
+    public void removeBookBySize(Integer rSelectSize) {
+        for (Book book : retreiveAll()) {
             if (book.getSize().equals(rSelectSize)) {
                 notFiltredRepo.remove(book);
                 repo.remove(book);
@@ -132,8 +127,8 @@ public class BookRepository implements ProjectRepository<Book> {
     }
 
     @Override
-    public void removeMethod6(String rSelectTitle, Integer rSelectSize) {
-        for (Book book : retreivell()) {
+    public void removeBookByTitleSize(String rSelectTitle, Integer rSelectSize) {
+        for (Book book : retreiveAll()) {
             if (book.getTitle().equals(rSelectTitle) && book.getSize().equals(rSelectSize)) {
                 notFiltredRepo.remove(book);
                 repo.remove(book);
@@ -142,8 +137,8 @@ public class BookRepository implements ProjectRepository<Book> {
     }
 
     @Override
-    public void removeMethod7(String rSelectTitle) {
-        for (Book book : retreivell()) {
+    public void removeBookByTitle(String rSelectTitle) {
+        for (Book book : retreiveAll()) {
             if (book.getTitle().equals(rSelectTitle)) {
                 notFiltredRepo.remove(book);
                 repo.remove(book);
@@ -158,7 +153,7 @@ public class BookRepository implements ProjectRepository<Book> {
     }
 
     @Override
-    public void filterMethod1(String rSelectAuthor) {
+    public void filterBookByAuthor(String rSelectAuthor) {
         repo.clear();
         for (Book books : notFiltredRepo) {
             if (books.getAuthor().equals(rSelectAuthor)) {
@@ -168,7 +163,7 @@ public class BookRepository implements ProjectRepository<Book> {
     }
 
     @Override
-    public void filterMethod2(String rSelectAuthor, String rSelectTitle) {
+    public void filterBookByAuthorTitle(String rSelectAuthor, String rSelectTitle) {
         repo.clear();
         for (Book books : notFiltredRepo) {
             if (books.getAuthor().equals(rSelectAuthor) & books.getTitle().equals(rSelectTitle)) {
@@ -178,7 +173,7 @@ public class BookRepository implements ProjectRepository<Book> {
     }
 
     @Override
-    public void filterMethod3(String rSelectAuthor, String rSelectTitle, Integer rSelectSize) {
+    public void filterBookByAuthorTitleSize(String rSelectAuthor, String rSelectTitle, Integer rSelectSize) {
         repo.clear();
         for (Book books : notFiltredRepo) {
             if (books.getAuthor().equals(rSelectAuthor) & books.getTitle().equals(rSelectTitle) & books.getSize().equals(rSelectSize)) {
@@ -188,7 +183,7 @@ public class BookRepository implements ProjectRepository<Book> {
     }
 
     @Override
-    public void filterMethod4(String rSelectAuthor, Integer rSelectSize) {
+    public void filterBookByAuthorSize(String rSelectAuthor, Integer rSelectSize) {
         repo.clear();
         for (Book books : notFiltredRepo) {
             if (books.getAuthor().equals(rSelectAuthor) & books.getSize().equals(rSelectSize)) {
@@ -198,7 +193,7 @@ public class BookRepository implements ProjectRepository<Book> {
     }
 
     @Override
-    public void filterMethod5(Integer rSelectSize) {
+    public void filterBookBySize(Integer rSelectSize) {
         repo.clear();
         for (Book books : notFiltredRepo) {
             if (books.getSize().equals(rSelectSize)) {
@@ -208,7 +203,7 @@ public class BookRepository implements ProjectRepository<Book> {
     }
 
     @Override
-    public void filterMethod6(String rSelectTitle, Integer rSelectSize) {
+    public void filterBookByTitleSize(String rSelectTitle, Integer rSelectSize) {
         repo.clear();
         for (Book books : notFiltredRepo) {
             if (books.getTitle().equals(rSelectTitle) & books.getSize().equals(rSelectSize)) {
@@ -218,7 +213,7 @@ public class BookRepository implements ProjectRepository<Book> {
     }
 
     @Override
-    public void filterMethod7(String rSelectTitle) {
+    public void filterBookByTitle(String rSelectTitle) {
         repo.clear();
         for (Book books : notFiltredRepo) {
             if (books.getTitle().equals(rSelectTitle)) {
