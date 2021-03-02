@@ -1,11 +1,14 @@
 package org.example.app.services;
 
+import org.example.web.dto.Book;
+
 import java.util.List;
 import java.util.Map;
 
 public interface ProjectRepository<T> {
     List<T> retreiveAll();
 
+    List<String> listOfFiles();
     void store(T book);
 
     boolean removeItemById(Integer bookIdToRemove);
@@ -33,18 +36,18 @@ public interface ProjectRepository<T> {
 
     void removeBookByAuthorTitleSize(String rSelectAuthor, String rSelectTitle, Integer rSelectSize);
 
-    void filterBookByAuthor(String rSelectAuthor);
+     List<Book> filterBookByAuthor(String rSelectAuthor);
 
-    void filterBookBySize(Integer rSelectSize);
+    List<Book> filterBookBySize(Integer rSelectSize);
 
-    void filterBookByTitle(String rSelectTitle);
+    List<Book> filterBookByTitle(String rSelectTitle);
 
-    void filterBookByAuthorTitle(String rSelectAuthor, String rSelectTitle);
+    List<Book> filterBookByAuthorTitle(String rSelectAuthor, String rSelectTitle);
 
-    void filterBookByAuthorSize(String rSelectAuthor, Integer rSelectSize);
+    List<Book> filterBookByAuthorSize(String rSelectAuthor, Integer rSelectSize);
 
-    void filterBookByTitleSize(String rSelectTitle, Integer rSelectSize);
+    List<Book> filterBookByTitleSize(String rSelectTitle, Integer rSelectSize);
 
-    void filterBookByAuthorTitleSize(String rSelectAuthor, String rSelectTitle, Integer rSelectSize);
+    List<Book> filterBookByAuthorTitleSize(String rSelectAuthor, String rSelectTitle, Integer rSelectSize);
 }
 

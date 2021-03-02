@@ -6,6 +6,8 @@ import org.example.web.dto.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -13,6 +15,7 @@ public class BookService {
     private final ProjectRepository<Book> bookRepo;
     private static final String DEFAULT_VALUE = "defaultValue";
     private Logger logger = Logger.getLogger(BookShelfController.class);
+
 
     @Autowired
     public BookService(ProjectRepository<Book> bookRepo) {
@@ -23,6 +26,9 @@ public class BookService {
         return bookRepo.retreiveAll();
     }
 
+    public List<String> listOfFiles() {
+        return bookRepo.listOfFiles();
+    }
 
     public List<String> getAuthors() {
         return bookRepo.getUniqueAuthors();
@@ -44,6 +50,7 @@ public class BookService {
     public boolean removeBookById(Integer bookIdToRemove) {
         return bookRepo.removeItemById(bookIdToRemove);
     }
+
 
     enum serviceValue {
         DEFAULT,
@@ -102,33 +109,44 @@ public class BookService {
         }
     }
 
-    public void filterBooks(String rSelectAuthor, String rSelectTitle, Integer rSelectSize) {
+    public List<Book> filterBooks(String rSelectAuthor, String rSelectTitle, Integer rSelectSize) {
+        ArrayList<Book> list = new ArrayList<Book>();
         switch (determineValues(rSelectAuthor, rSelectTitle, rSelectSize)) {
             case BY_AUTHOR:
-                bookRepo.filterBookByAuthor(rSelectAuthor);
+                list = (ArrayList<Book>) bookRepo.filterBookByAuthor(rSelectAuthor);
                 break;
             case BY_SIZE:
-                bookRepo.filterBookBySize(rSelectSize);
+                list = (ArrayList<Book>) bookRepo.filterBookBySize(rSelectSize);
                 break;
             case BY_TITLE:
-                bookRepo.filterBookByTitle(rSelectTitle);
+                list = (ArrayList<Book>) bookRepo.filterBookByTitle(rSelectTitle);
                 break;
             case BY_AUTHOR_TITLE:
-                bookRepo.filterBookByAuthorTitle(rSelectAuthor, rSelectTitle);
+                list = (ArrayList<Book>) bookRepo.filterBookByAuthorTitle(rSelectAuthor, rSelectTitle);
                 break;
             case BY_AUTHOR_SIZE:
-                bookRepo.filterBookByAuthorSize(rSelectAuthor, rSelectSize);
+                list = (ArrayList<Book>) bookRepo.filterBookByAuthorSize(rSelectAuthor, rSelectSize);
                 break;
             case BY_TITLE_SIZE:
-                bookRepo.filterBookByTitleSize(rSelectTitle, rSelectSize);
+                list = (ArrayList<Book>) bookRepo.filterBookByTitleSize(rSelectTitle, rSelectSize);
                 break;
             case BY_AUTHOR_TITLE_SIZE:
-                bookRepo.filterBookByAuthorTitleSize(rSelectAuthor, rSelectTitle, rSelectSize);
+                list = (ArrayList<Book>) bookRepo.filterBookByAuthorTitleSize(rSelectAuthor, rSelectTitle, rSelectSize);
                 break;
         }
+        return list;
     }
 
     public void resetFilter() {
         bookRepo.resetFilter();
+    }
+
+
+    private void defaultInit() {
+        logger.info("default INIT in book service bean");
+    }
+
+    private void defaultDestroy() {
+        logger.info("default DESTROY in book service bean");
     }
 }

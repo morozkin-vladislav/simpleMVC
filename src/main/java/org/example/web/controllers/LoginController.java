@@ -2,6 +2,7 @@ package org.example.web.controllers;
 
 import org.apache.log4j.Logger;
 
+import org.example.app.exceptions.BookShelfLoginException;
 import org.example.app.services.LoginService;
 import org.example.web.dto.LoginForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,21 @@ public class LoginController {
 
     @GetMapping
     public String login(Model model) {
-
         logger.info("GET /login return login_page.html");
         model.addAttribute("loginForm", new LoginForm());
         return "login_page";
     }
 
+    @PostMapping("/auth")
+    public String authenticate(LoginForm loginFrom) {
+        if (loginService.authenticate(loginFrom)) {
+            logger.info("login OK redirect to book shelf");
+            return "redirect:/books/shelf";
+        } else {
+            logger.info("login FAIL redirect back to login");
+            return "redirect:/login";
+        }
+    }
 
     @GetMapping("/registration")
     public String registration() {
