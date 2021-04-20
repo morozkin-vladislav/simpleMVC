@@ -17,8 +17,8 @@ public class BookService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<com.example.MyBookShopApp.data.Book> getBooksData() {
-        List<Book> books = jdbcTemplate.query("SELECT * FROM books JOIN authors ON books.AUTHOR_ID = AUTHORS.ID;", (ResultSet rs, int rowNum)->{
+    public List<Book> getBooksData() {
+        List<Book> books = jdbcTemplate.query("SELECT * FROM books", (ResultSet rs, int rowNum)->{
             com.example.MyBookShopApp.data.Book book = new com.example.MyBookShopApp.data.Book();
             book.setId(rs.getInt("id"));
             book.setAuthor(rs.getString("author"));
