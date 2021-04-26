@@ -1,28 +1,50 @@
 package com.example.MyBookShopApp.data;
 
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "books")
 public class Book {
-    private  Integer id;
-    private String author;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
+    private Author author;
+
+    @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
     private String priceOld;
+
+    @Column(nullable = false)
     private String price;
 
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", author='" + author + '\'' +
-                ", title='" + title + '\'' +
-                ", priceOld='" + priceOld + '\'' +
-                ", price='" + price + '\'' +
-                '}';
-    }
+//    @Column(nullable = false)
+//    private LocalDateTime pub_date;
+//
+//    @Column(nullable = false, name = "is_bestseller")
+//    private boolean isBestseller;
+//
+//    @Column(nullable = false)
+//    private String slug;
+//
+//    @Column(nullable = false)
+//    private Integer discount;
+//
+//    @Column(nullable = false)
+//    private String image;
+
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 
@@ -42,7 +64,7 @@ public class Book {
         return id;
     }
 
-    public String getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 

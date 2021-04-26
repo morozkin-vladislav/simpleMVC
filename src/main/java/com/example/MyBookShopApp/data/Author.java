@@ -1,25 +1,53 @@
 package com.example.MyBookShopApp.data;
 
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "authors")
 public class Author {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String firsName;
+    private String firstName;
     private String lastName;
+//
+//    @Column(nullable = false)
+//    private String slug;
+//
+//    @Column(nullable = false)
+//    private String photo;
+//
+//    private String description;
+
+
+    @OneToMany(mappedBy = "author")
+
+
+    private List<Book> bookList = new ArrayList<>();
+
+    public void setBookList(List<Book> bookList) {
+        this.bookList = bookList;
+    }
+
+    public List<Book> getBookList() {
+        return bookList;
+    }
 
     @Override
     public String toString() {
-        return "Author{" +
-                "id=" + id +
-                ", firsName='" + firsName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
+        return firstName + ' ' + lastName;
     }
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public void setFirsName(String firsName) {
-        this.firsName = firsName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public void setLastName(String lastName) {
@@ -31,7 +59,7 @@ public class Author {
     }
 
     public String getFirsName() {
-        return firsName;
+        return firstName;
     }
 
     public String getLastName() {

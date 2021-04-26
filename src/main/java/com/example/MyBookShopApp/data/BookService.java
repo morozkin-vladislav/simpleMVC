@@ -10,26 +10,28 @@ import java.util.List;
 
 @Service
 public class BookService {
-    private JdbcTemplate jdbcTemplate;
+    private BookRepository bookRepository;
 
     @Autowired
-    public BookService(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
     }
 
     public List<Book> getBooksData() {
-        List<Book> books = jdbcTemplate.query("SELECT * FROM books", (ResultSet rs, int rowNum)->{
-            com.example.MyBookShopApp.data.Book book = new com.example.MyBookShopApp.data.Book();
-            book.setId(rs.getInt("id"));
-            book.setAuthor(rs.getString("author"));
-            book.setTitle(rs.getString("title"));
-            book.setPriceOld(rs.getString("priceOld"));
-            book.setPrice(rs.getString("price"));
-            return book;
-        });
-        return new ArrayList<>(books);
+      return  bookRepository.findAll();
     }
 
+//    private String getAuthorByAuthorId(int author_id) {
+//        List<Author> authors = jdbcTemplate.query("SELECT * from authors WHERE id = " + author_id, (ResultSet rs,
+//                                                                                                           int rowNum) -> {
+//            Author author = new Author();
+//            author.setId(rs.getInt("id"));
+//            author.setFirsName(rs.getString("first_name"));
+//            author.setLastName(rs.getString("last_name"));
+//            return author;
+//        });
+//        return authors.get(0).toString();
+//    }
 
 
 }
