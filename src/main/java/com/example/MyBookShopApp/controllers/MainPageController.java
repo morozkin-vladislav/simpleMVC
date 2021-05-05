@@ -35,7 +35,7 @@ public class MainPageController {
 
     @ModelAttribute("popularBooks")
     public List<Book> popularBooks() {
-        return bookService.getPopularBooks(0, 6);
+        return bookService.getPopularBooks(0, 20);
     }
 
     @ModelAttribute("searchWordDto")
@@ -58,6 +58,11 @@ public class MainPageController {
         return "/books/recent";
     }
 
+    @GetMapping("/popularBooks")
+    public String popular() {
+        return "/books/popular";
+    }
+
     @GetMapping("/books/recommended")
     @ResponseBody
     public BooksPageDto getBooksPage(@RequestParam("offset") Integer offset,
@@ -71,6 +76,13 @@ public class MainPageController {
                                             @RequestParam("limit") Integer limit) {
         return new BooksPageDto(bookService.getPopularBooks(offset, limit));
     }
+
+//    @GetMapping("/popular")
+//    @ResponseBody
+//    public BooksPageDto PopularBooksPage(@RequestParam("offset") Integer offset,
+//                                            @RequestParam("limit") Integer limit) {
+//        return new BooksPageDto(bookService.getPopularBooks(offset, limit));
+//    }
 
 
     @GetMapping("/recent")
