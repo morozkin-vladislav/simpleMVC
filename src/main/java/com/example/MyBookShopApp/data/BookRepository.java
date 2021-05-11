@@ -38,6 +38,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query(value = "SELECT books.id, books.description, books.image, books.is_bestseller, books.discount, books.price, books.pub_date, books.slug, books.title, books.author_id  FROM books LEFT OUTER JOIN books_rating ON (books.id = books_rating.book_id) WHERE books_rating.rating = 5", nativeQuery = true)
     List<Book> findPopularBooks(Pageable nextPage);
 
+
+
     List<Book> findBookByPubDateBetween(Date dateFrom, Date dateTo, Pageable nextPage);
 
 

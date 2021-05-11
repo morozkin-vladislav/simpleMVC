@@ -8,11 +8,14 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "books")
 @ApiModel(description = "entity representing a book")
 public class Book {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +30,12 @@ public class Book {
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     @JsonIgnore
     private Author author;
+
+    @OneToOne
+    @JoinTable (name = "books2tags",
+            joinColumns = @JoinColumn (name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Tag tag;
 
     @Column(name = "is_bestseller")
     @ApiModelProperty("if isBestseller = 1 so the book is considered to be bestseller and  if 0 the book is not a " +
@@ -53,6 +62,10 @@ public class Book {
     @JsonProperty("discount")
     @ApiModelProperty("discount value for book")
     private Double price;
+
+
+
+
 
     public Date getPubDate() {
         return pubDate;
