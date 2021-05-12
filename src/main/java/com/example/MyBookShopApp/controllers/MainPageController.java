@@ -1,9 +1,9 @@
 package com.example.MyBookShopApp.controllers;
 
-import com.example.MyBookShopApp.data.Book;
+import com.example.MyBookShopApp.data.*;
 import com.example.MyBookShopApp.service.BookService;
-import com.example.MyBookShopApp.data.BooksPageDto;
-import com.example.MyBookShopApp.data.SearchWordDto;
+import com.example.MyBookShopApp.service.GenreService;
+import com.example.MyBookShopApp.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,11 +17,16 @@ import java.util.List;
 public class MainPageController {
 
     private final BookService bookService;
+    private final TagService tagService;
+    private final GenreService genreService;
 
     @Autowired
-    public MainPageController(BookService bookService) {
+    public MainPageController(BookService bookService, TagService tagService, GenreService genreService) {
         this.bookService = bookService;
+        this.tagService = tagService;
+        this.genreService = genreService;
     }
+
 
     @ModelAttribute("recommendedBooks")
     public List<Book> recommendedBooks() {
@@ -48,10 +53,39 @@ public class MainPageController {
         return new ArrayList<>();
     }
 
+    @ModelAttribute("tags")
+    public List<Tag> getTags() {
+        return tagService.getAllTags();
+    }
+
+    @ModelAttribute("genres")
+    public List<Genre> getGenres() {
+        return genreService.getAllGenres();
+    }
+
     @GetMapping("/")
     public String mainPage() {
         return "index";
     }
+
+    @GetMapping("/genres")
+    public String genre() {
+        return "/genres/index";
+    }
+
+    @GetMapping("/genres/slug")
+    public String genreSlug(@RequestParam("genreId") Integer genreId, Model model) {
+        model.addAttribute("bookByGenre", bookService.getBooksByGenreId(genreId, 0, 20));
+        return "/genres/slug";
+    }
+
+    @GetMapping("/tags/slug")
+    public String tagsSlug(@RequestParam("tagId") Integer tagId, Model model) {
+        model.addAttribute("bookByGenre", bookService.getBooksByTagId(tagId, 0, 20));
+        return "/genres/slug";
+    }
+
+
 
     @GetMapping("/recentBooks")
     public String recent() {
@@ -77,12 +111,6 @@ public class MainPageController {
         return new BooksPageDto(bookService.getPopularBooks(offset, limit));
     }
 
-//    @GetMapping("/popular")
-//    @ResponseBody
-//    public BooksPageDto PopularBooksPage(@RequestParam("offset") Integer offset,
-//                                            @RequestParam("limit") Integer limit) {
-//        return new BooksPageDto(bookService.getPopularBooks(offset, limit));
-//    }
 
 
     @GetMapping("/recent")

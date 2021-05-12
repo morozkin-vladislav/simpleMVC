@@ -144,8 +144,8 @@
         </div>
         <h2 class="Middle-title">Книги по тегам
         </h2>
-        <div class="Tags" id="tags">
-          <div class="Tag Tag_xs"><a href="/tags/index.html">современная литература</a>
+        <div class="Tags" id="tags" th:each="tag : ${tags}">
+          <div class="Tag Tag_xs"><a th:href="@{/tags/slug(tagId=${tag.id})}" th:text="${tag.name}">современная литература</a>
           </div>
         </div>
       </main>

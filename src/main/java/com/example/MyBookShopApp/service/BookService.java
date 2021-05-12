@@ -1,7 +1,7 @@
 package com.example.MyBookShopApp.service;
 
 import com.example.MyBookShopApp.data.Book;
-import com.example.MyBookShopApp.data.BookRepository;
+import com.example.MyBookShopApp.repositorys.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,6 +45,21 @@ public class BookService {
 
     public List<Book> getBooksWithMaxPrice() {
         return bookRepository.getBooksWithMaxDiscount();
+    }
+
+    public List<Book> getBooksByGenreId(Integer genreId, Integer offset, Integer limit) {
+        Pageable nextPage = PageRequest.of(offset, limit);
+        return bookRepository.findBookByGenreId(genreId, nextPage);
+    }
+
+    public List<Book> getBooksByTagId(Integer genreId, Integer offset, Integer limit) {
+        Pageable nextPage = PageRequest.of(offset, limit);
+        return bookRepository.findBookByTagId(genreId, nextPage);
+    }
+
+    public List<Book> getBooksByAuthorId(Integer authorId, Integer offset, Integer limit) {
+        Pageable nextPage = PageRequest.of(offset, limit);
+        return bookRepository.findBookByAuthorId(authorId, nextPage);
     }
 
     public List<Book> getBestsellers() {

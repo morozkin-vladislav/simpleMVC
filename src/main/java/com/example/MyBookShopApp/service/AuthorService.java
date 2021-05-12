@@ -1,6 +1,7 @@
 package com.example.MyBookShopApp.service;
 
 import com.example.MyBookShopApp.data.Author;
+import com.example.MyBookShopApp.repositorys.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -13,12 +14,19 @@ import java.util.stream.Collectors;
 @Service
 public class AuthorService {
 
+    private AuthorRepository authorRepository;
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public AuthorService(JdbcTemplate jdbcTemplate) {
+    public AuthorService(AuthorRepository authorRepository, JdbcTemplate jdbcTemplate) {
+        this.authorRepository = authorRepository;
         this.jdbcTemplate = jdbcTemplate;
     }
+
+    public Author findAuthorById(Integer id){
+        return authorRepository.findAuthorById(id);
+    }
+
 
     public Map<String, List<Author>> getAuthorsMap() {
         List<Author> authors = jdbcTemplate.query("SELECT * FROM authors",(ResultSet rs, int rowNum) -> {

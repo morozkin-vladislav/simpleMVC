@@ -1,10 +1,11 @@
-package com.example.MyBookShopApp.data;
+package com.example.MyBookShopApp.repositorys;
 
+import com.example.MyBookShopApp.data.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+
 
 import java.sql.Date;
 import java.util.List;
@@ -35,10 +36,14 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query(value = "SELECT * FROM books WHERE discount = (SELECT MAX(discount) FROM books)", nativeQuery = true)
     List<Book> getBooksWithMaxDiscount();
 
-    @Query(value = "SELECT books.id, books.description, books.image, books.is_bestseller, books.discount, books.price, books.pub_date, books.slug, books.title, books.author_id  FROM books LEFT OUTER JOIN books_rating ON (books.id = books_rating.book_id) WHERE books_rating.rating = 5", nativeQuery = true)
+    @Query(value = "SELECT * FROM books LEFT OUTER JOIN books_rating ON (books.id = books_rating.book_id) WHERE books_rating.rating = 5", nativeQuery = true)
     List<Book> findPopularBooks(Pageable nextPage);
 
+    List<Book> findBookByGenreId(Integer id,Pageable nextPage );
 
+    List<Book> findBookByTagId(Integer id,Pageable nextPage );
+
+    List<Book> findBookByAuthorId(Integer id,Pageable nextPage );
 
     List<Book> findBookByPubDateBetween(Date dateFrom, Date dateTo, Pageable nextPage);
 

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.models.auth.In;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -31,11 +32,17 @@ public class Book {
     @JsonIgnore
     private Author author;
 
-    @OneToOne
-    @JoinTable (name = "books2tags",
-            joinColumns = @JoinColumn (name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    @ManyToOne
+    @JoinColumn(name = "tag_id", referencedColumnName = "id")
+    @JsonIgnore
     private Tag tag;
+
+    @ManyToOne
+    @JoinColumn(name = "genre_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Genre genre;
+
+
 
     @Column(name = "is_bestseller")
     @ApiModelProperty("if isBestseller = 1 so the book is considered to be bestseller and  if 0 the book is not a " +
@@ -63,9 +70,21 @@ public class Book {
     @ApiModelProperty("discount value for book")
     private Double price;
 
+    public Tag getTag() {
+        return tag;
+    }
 
+    public void setTag(Tag tag) {
+        this.tag = tag;
+    }
 
+    public Genre getGenre() {
+        return genre;
+    }
 
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
 
     public Date getPubDate() {
         return pubDate;
