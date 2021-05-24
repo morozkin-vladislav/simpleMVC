@@ -22,11 +22,6 @@ public class Author {
     @ApiModelProperty(value = "last name of author",example = "Blaskovits", position = 3)
     private String lastName;
 
-    private String image;
-
-    @Column(length = 5000)
-    private String biography;
-
     @OneToMany(mappedBy = "author")
     @JsonIgnore
     private List<Book> bookList = new ArrayList<>();
@@ -68,19 +63,5 @@ public class Author {
         this.lastName = lastName;
     }
 
-    public String getImage() {
-        return image;
-    }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getBiography() {
-        return biography;
-    }
-
-    public void setBiography(String biography) {
-        this.biography = biography;
-    }
 }

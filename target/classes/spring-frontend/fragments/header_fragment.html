@@ -32,9 +32,11 @@
                             </form>
                         </div>
                     </div>
+                    <span th:if="${searchError}" th:text="${searchError.getLocalizedMessage()}"
+                          style="color: red"></span>
                 </div>
                 <div class="row-block Header-cart">
-                    <div class="CartBlock"><a class="CartBlock-block" href="/postponed.html">
+                    <div class="CartBlock"><a class="CartBlock-block" th:href="@{/books/postponed}">
                         <svg class="CartBlock-img" xmlns="http://www.w3.org/2000/svg" height="23" width="23"
                              viewBox="0 0 512 512">
                             <g>
@@ -44,7 +46,9 @@
                                 </g>
                             </g>
                         </svg>
-                        <span class="CartBlock-amount">0</span></a><a class="CartBlock-block" href="/cart.html">
+                        <span class="CartBlock-amount">0</span></a><a class="CartBlock-block"
+                                                                      th:href="@{/books/cart}"
+                                                                      href="/cart.html">
                         <svg class="CartBlock-img" xmlns="http://www.w3.org/2000/svg" width="30" height="23"
                              viewBox="0 0 30 23">
                             <g>
@@ -81,11 +85,11 @@
                 <ul class="menu menu_main">
                     <li class="menu-item"><a class="menu-link" href="/index.html" th:href="@{/}">Главная</a>
                     </li>
-                    <li class="menu-item"><a class="menu-link" href="/genres/index.html" th:href="@{/genres}">Жанры</a>
+                    <li class="menu-item"><a class="menu-link" href="/genres/index.html">Жанры</a>
                     </li>
-                    <li class="menu-item"><a class="menu-link" href="/books/recent.html" th:href="@{/recentBooks}">Новинки</a>
+                    <li class="menu-item"><a class="menu-link" href="/books/recent.html">Новинки</a>
                     </li>
-                    <li class="menu-item"><a class="menu-link" href="/books/popular.html" th:href="@{/popularBooks}">Популярное</a>
+                    <li class="menu-item"><a class="menu-link" href="/books/popular.html">Популярное</a>
                     </li>
                     <li class="menu-item menu-item_ACTIVE"><a class="menu-link" href="/authors/index.html"
                                                               th:href="@{/authors}">

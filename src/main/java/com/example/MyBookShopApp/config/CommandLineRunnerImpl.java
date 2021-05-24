@@ -1,8 +1,8 @@
 package com.example.MyBookShopApp.config;
 
-import com.example.MyBookShopApp.repositorys.BookRepository;
+import com.example.MyBookShopApp.repository.BookRepository;
 import com.example.MyBookShopApp.data.TestEntity;
-import com.example.MyBookShopApp.repositorys.TestEntityCrudRepository;
+import com.example.MyBookShopApp.repository.TestEntityCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 

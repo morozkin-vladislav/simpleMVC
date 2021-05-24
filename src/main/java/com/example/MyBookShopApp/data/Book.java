@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.models.auth.In;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -15,8 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "books")
 @ApiModel(description = "entity representing a book")
-public class Book {
-
+public class Book extends RepresentationModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,17 +31,16 @@ public class Book {
     @JsonIgnore
     private Author author;
 
-    @ManyToOne
-    @JoinColumn(name = "tag_id", referencedColumnName = "id")
-    @JsonIgnore
-    private Tag tag;
-
-    @ManyToOne
-    @JoinColumn(name = "genre_id", referencedColumnName = "id")
-    @JsonIgnore
-    private Genre genre;
+    @ManyToMany
+    @JoinColumn(name="id", referencedColumnName = "book_id")
+    private List<BookRating> rating;
 
 
+
+    @JsonGetter("authors")
+    public String authorsFullName(){
+        return author.toString();
+    }
 
     @Column(name = "is_bestseller")
     @ApiModelProperty("if isBestseller = 1 so the book is considered to be bestseller and  if 0 the book is not a " +
@@ -55,6 +53,17 @@ public class Book {
     private String title;
     @ApiModelProperty("image url")
     private String image;
+
+    @OneToMany(mappedBy = "book")
+    private List<BookFile> bookFileList = new ArrayList<>();
+
+    public List<BookFile> getBookFileList() {
+        return bookFileList;
+    }
+
+    public void setBookFileList(List<BookFile> bookFileList) {
+        this.bookFileList = bookFileList;
+    }
 
     @Column(columnDefinition = "TEXT")
     @ApiModelProperty("book description text")
@@ -70,20 +79,10 @@ public class Book {
     @ApiModelProperty("discount value for book")
     private Double price;
 
-    public Tag getTag() {
-        return tag;
-    }
-
-    public void setTag(Tag tag) {
-        this.tag = tag;
-    }
-
-    public Genre getGenre() {
-        return genre;
-    }
-
-    public void setGenre(Genre genre) {
-        this.genre = genre;
+    @JsonProperty
+    public Integer discountPrice(){
+        Integer discountedPriceInt = priceOld - Math.toIntExact(Math.round(price * priceOld));
+        return discountedPriceInt;
     }
 
     public Date getPubDate() {
@@ -164,6 +163,22 @@ public class Book {
     
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public List<BookRating> getRating() {
+        return rating;
+    }
+
+    public void setRating(List<BookRating> rating) {
+        this.rating = rating;
+    }
+
+    public Integer getRatingOfBook(){
+        int ratingOfBook = 0;
+        for (BookRating ratingInstance : this.rating){
+                ratingOfBook += ratingInstance.getRating();
+        }
+        return ratingOfBook / this.rating.size();
     }
 
     @Override
